@@ -22,7 +22,20 @@ A new Flutter FFI plugin project.
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
 
+  s.xcconfig = {
+    'FRAMEWORK_SEARCH_PATHS' => '"${HOME}/Library/Developer/GStreamer/iPhone.sdk"',
+  }
+
   # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  # Ignored arm64 https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/3084
+  s.pod_target_xcconfig = { 
+    'DEFINES_MODULE' => 'YES', 
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386 arm64',
+    'HEADER_SEARCH_PATHS' => '"${HOME}/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers"',
+    'FRAMEWORK_SEARCH_PATHS' => '"${HOME}/Library/Developer/GStreamer/iPhone.sdk"',
+  }
+  s.frameworks = ['GStreamer', 'CoreFoundation', 'CoreMedia', 'CoreVideo', 'AudioToolbox', 'VideoToolbox', 'AVFoundation', 'AssetsLibrary', 'OpenGLES']
+  s.libraries  = ['iconv']
   s.swift_version = '5.0'
+
 end
